@@ -10,6 +10,34 @@ if (is_post()) {
     $category = trim($_POST['category'] ?? '');
     $price = (float)($_POST['price'] ?? 0);
     $image = trim($_POST['image'] ?? '');
+    // Handle file uploads (multiple)
+    $uploaded = [];
+    if (!empty($_FILES['images']['name'][0] ?? null)) {
+      $uploadDir = dirname(__DIR__) . '/assets/uploads/';
+      if (!is_dir($uploadDir)) { @mkdir($uploadDir, 0775, true); }
+      $names = $_FILES['images']['name'];
+      $tmps = $_FILES['images']['tmp_name'];
+      $errs = $_FILES['images']['error'];
+      $types = $_FILES['images']['type'];
+      foreach ($names as $i => $nm) {
+        if (($errs[$i] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
+          $ext = pathinfo($nm, PATHINFO_EXTENSION);
+          $ext = preg_replace('/[^a-zA-Z0-9]/','',$ext);
+          $safe = preg_replace('/[^a-zA-Z0-9_-]/','_', pathinfo($nm, PATHINFO_FILENAME));
+          $fname = $safe . '-' . uniqid() . ($ext?'.'.$ext:'');
+          $dest = $uploadDir . $fname;
+          if (@move_uploaded_file($tmps[$i], $dest)) {
+            $uploaded[] = 'assets/uploads/' . $fname; // relative web path
+          }
+        }
+      }
+    }
+    // Merge uploaded images with text field (supports comma/newline separated)
+    if ($uploaded) {
+      $pieces = preg_split('/[\n,]+/', $image);
+      $pieces = array_filter(array_map('trim', $pieces));
+      $image = implode(',', array_merge($pieces, $uploaded));
+    }
     $description = trim($_POST['description'] ?? '');
     $specs = trim($_POST['specs'] ?? '');
     if ($action === 'create') {
@@ -40,7 +68,7 @@ $edit = null; if (isset($_GET['edit'])) { $edit = fetch_product((int)$_GET['edit
   <?php if ($msg): ?><div class="card" style="padding:12px; background:#ecfeff; border:1px solid #a5f3fc; border-radius:12px; margin-bottom:12px;"><?php echo e($msg); ?></div><?php endif; ?>
 
   <div class="card" style="padding:16px; margin-bottom:16px;">
-    <form method="post" class="form">
+    <form method="post" class="form" enctype="multipart/form-data" id="prodForm">
       <input type="hidden" name="action" value="<?php echo $edit?'update':'create'; ?>">
       <input type="hidden" name="id" value="<?php echo (int)($edit['id'] ?? 0); ?>">
       <div class="field"><label>Name</label><input required type="text" name="name" value="<?php echo e($edit['name'] ?? ''); ?>"></div>
@@ -52,7 +80,27 @@ $edit = null; if (isset($_GET['edit'])) { $edit = fetch_product((int)$_GET['edit
         </select>
       </div>
       <div class="field"><label>Price</label><input required step="0.01" type="number" name="price" value="<?php echo e($edit['price'] ?? '0'); ?>"></div>
-      <div class="field"><label>Image URL</label><input type="text" name="image" value="<?php echo e($edit['image'] ?? ''); ?>"></div>
+      <?php if ($edit && !empty($edit['image'])): ?>
+        <div class="field"><label>Current Images</label>
+          <div id="admin-imgs-list" style="display:flex; gap:9px; flex-wrap:wrap;margin-bottom:6px;">
+            <?php 
+              $arr = preg_split('/[\n,]+/', trim($edit['image']));
+              foreach ($arr as $idx=>$img) { $img = trim($img); if($img): ?>
+              <div class="admin-img-thumb" data-path="<?php echo e($img); ?>" style="position:relative;display:inline-block;">
+                <img src="<?php echo e(preg_match('~^https?://~',$img) ? $img : base_url($img)); ?>" style="width:64px;height:64px;object-fit:cover;border-radius:7px;border:1.5px solid #c8d8ef;">
+                <button type="button" class="delimg-btn" style="position:absolute;top:-7px;right:-7px;background:#fff2;border-radius:50%;border:none;color:#d71c1c;font-size:18px;cursor:pointer;" aria-label="Remove image" onclick="removeImg('<?php echo e($img); ?>')">×</button>
+              </div>
+            <?php endif; } ?>
+          </div>
+          <input type="hidden" name="image" id="imageField" value="<?php echo e($edit['image']); ?>">
+          <small style="color:#64748b;">Click × to remove an existing image from this product.</small>
+        </div>
+      <?php endif; ?>
+      <div class="field"><label>Images</label>
+        <input type="text" name="image" placeholder="URLs or relative paths, comma or newline separated" value="<?php echo e($edit['image'] ?? ''); ?>">
+        <small style="color:#64748b;">You can also upload files below; uploaded paths will be saved automatically.</small>
+        <input type="file" name="images[]" multiple accept="image/*">
+      </div>
       <div class="field"><label>Description</label><textarea name="description"><?php echo e($edit['description'] ?? ''); ?></textarea></div>
       <div class="field"><label>Specs</label><textarea name="specs"><?php echo e($edit['specs'] ?? ''); ?></textarea></div>
       <div><button class="btn btn-primary" type="submit"><?php echo $edit?'Update':'Create'; ?></button> <?php if ($edit): ?><a class="btn" href="products.php">Clear</a><?php endif; ?></div>
@@ -86,5 +134,15 @@ $edit = null; if (isset($_GET['edit'])) { $edit = fetch_product((int)$_GET['edit
 </section>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+
+<script>
+function removeImg(path) {
+  const target = document.querySelector('.admin-img-thumb[data-path="'+path.replace(/'/g,"&#39;")+'"]');
+  if (target) target.remove();
+  let imgs = [];
+  document.querySelectorAll('.admin-img-thumb').forEach(function(div){ imgs.push(div.getAttribute('data-path')); });
+  document.getElementById('imageField').value = imgs.join(',');
+}
+</script>
 
 

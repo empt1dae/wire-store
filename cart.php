@@ -24,7 +24,7 @@ foreach ($items as $it) { $total += (float)$it['price'] * (int)$it['qty']; }
       <tbody>
       <?php foreach ($items as $it): $sub = (float)$it['price'] * (int)$it['qty']; ?>
         <tr>
-          <td><a href="/product.php?id=<?php echo (int)$it['id']; ?>"><?php echo e($it['name']); ?></a></td>
+          <td><a href="<?php echo e(base_url('product.php?id='.(int)$it['id'])); ?>"><?php echo e($it['name']); ?></a></td>
           <td>$<?php echo number_format((float)$it['price'], 2); ?></td>
           <td><input type="number" min="0" name="qty[<?php echo (int)$it['id']; ?>]" value="<?php echo (int)$it['qty']; ?>" style="width:90px;"></td>
           <td>$<?php echo number_format($sub, 2); ?></td>

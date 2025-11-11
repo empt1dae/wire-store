@@ -12,14 +12,18 @@ $count = cart_count();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="<?php echo e(base_url('assets/css/style.css')); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo e(base_url('image/logo/logo.svg')); ?>">
+    <link rel="apple-touch-icon" href="<?php echo e(base_url('image/logo/logo.svg')); ?>">
     <script type="module" src="<?php echo e(base_url('assets/js/main.js')); ?>"></script>
   </head>
   <body>
     <header class="site-header">
       <div class="container nav">
         <a href="<?php echo e(base_url('index.php')); ?>" class="brand" aria-label="Wire home">
-          <div class="brand-logo"></div>
+        
+          <div class="footer-logo-box">W</div>
           <div>Wire</div>
+          
         </a>
         <nav class="nav-links">
           <a href="<?php echo e(base_url('catalog.php')); ?>">Catalog</a>

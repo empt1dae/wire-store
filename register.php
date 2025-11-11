@@ -37,20 +37,27 @@ if (is_post()) {
 }
 ?>
 
-<section class="section">
+<section class="section auth-center">
   <h2 class="section-title">Create Account</h2>
   <?php if ($errors): ?><div class="card" style="padding:12px; color:#b91c1c; border:1px solid #fecaca; background:#fef2f2; border-radius:12px; margin-bottom:12px;">
       <?php foreach ($errors as $e) echo '<div>'.e($e).'</div>'; ?>
   </div><?php endif; ?>
-  <form class="card form" method="post" style="padding:16px; max-width:520px;">
+  <form class="card form auth-card" method="post">
     <div class="field"><label>Name</label><input required type="text" name="name" value="<?php echo e($_POST['name'] ?? ''); ?>"></div>
     <div class="field"><label>Email</label><input required type="email" name="email" value="<?php echo e($_POST['email'] ?? ''); ?>"></div>
     <div class="field"><label>Password</label><input required type="password" name="password"></div>
     <div class="field"><label>Confirm Password</label><input required type="password" name="confirm"></div>
     <button class="btn btn-primary" type="submit">Register</button>
   </form>
+  <div class="auth-links"><a href="login.php">Do you already have an account? Log in</a></div>
 </section>
-
+<style>
+.auth-center { display:flex; flex-direction:column; align-items:center; min-height:60vh; justify-content:center; }
+.auth-card { margin-top:18px; max-width:420px; box-shadow:0 2px 12px rgba(18,70,140,0.045); padding:25px 20px; border-radius:16px; }
+.auth-links { text-align:center; margin-top:16px; }
+.auth-links a { color:#2563eb; text-decoration:underline; font-size:15px; }
+.auth-links a:hover { color:#1747a5; }
+</style>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
 

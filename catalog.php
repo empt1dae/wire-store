@@ -5,7 +5,20 @@ $category = $_GET['category'] ?? '';
 $sort = $_GET['sort'] ?? '';
 $products = fetch_products($search ?: null, $category ?: null, $sort ?: null);
 ?>
-
+<?php
+function get_first_image($imagestr) {
+  $arr = preg_split('/[\n,]+/', trim((string)$imagestr));
+  foreach ($arr as $s) {
+    $s = trim($s);
+    if ($s !== '') return $s;
+  }
+  return $imagestr;
+}
+function resolve_img_src($path) {
+  if (preg_match('~^https?://~i', $path)) return $path;
+  return base_url(ltrim($path, '/'));
+}
+?>
 <section class="section">
   <form class="controls" method="get">
     <input type="text" name="q" placeholder="Search products" value="<?php echo e($search); ?>">
@@ -32,7 +45,7 @@ $products = fetch_products($search ?: null, $category ?: null, $sort ?: null);
     <?php foreach ($products as $p): ?>
       <div class="card">
         <a href="<?php echo e(base_url('product.php?id='.(int)$p['id'])); ?>" class="card-img">
-          <img src="<?php echo e($p['image']); ?>" alt="<?php echo e($p['name']); ?>" onerror="this.parentElement.textContent='Image'; this.remove();">
+          <img src="<?php echo e(resolve_img_src(get_first_image($p['image']))); ?>" alt="<?php echo e($p['name']); ?>" onerror="this.parentElement.textContent='Image'; this.remove();">
         </a>
         <div class="card-body">
           <div style="font-weight:600;"><?php echo e($p['name']); ?></div>

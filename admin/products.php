@@ -10,7 +10,7 @@ if (is_post()) {
     $category = trim($_POST['category'] ?? '');
     $price = (float)($_POST['price'] ?? 0);
     $image = trim($_POST['image'] ?? '');
-    // Handle file uploads (multiple)
+    
     $uploaded = [];
     if (!empty($_FILES['images']['name'][0] ?? null)) {
       $uploadDir = dirname(__DIR__) . '/assets/uploads/';
@@ -27,12 +27,12 @@ if (is_post()) {
           $fname = $safe . '-' . uniqid() . ($ext?'.'.$ext:'');
           $dest = $uploadDir . $fname;
           if (@move_uploaded_file($tmps[$i], $dest)) {
-            $uploaded[] = 'assets/uploads/' . $fname; // relative web path
+            $uploaded[] = 'assets/uploads/' . $fname; 
           }
         }
       }
     }
-    // Merge uploaded images with text field (supports comma/newline separated)
+    
     if ($uploaded) {
       $pieces = preg_split('/[\n,]+/', $image);
       $pieces = array_filter(array_map('trim', $pieces));
@@ -45,19 +45,24 @@ if (is_post()) {
       $stmt->bind_param('ssdsss', $name, $category, $price, $image, $description, $specs);
       $stmt->execute();
       $msg = 'Product created';
+      $_SESSION['admin_notify'] = ['type' => 'success', 'message' => 'Product created successfully!'];
     } else {
       $stmt = $mysqli->prepare('UPDATE products SET name=?, category=?, price=?, image=?, description=?, specs=? WHERE id=?');
       $stmt->bind_param('ssdsssi', $name, $category, $price, $image, $description, $specs, $id);
       $stmt->execute();
       $msg = 'Product updated';
+      $_SESSION['admin_notify'] = ['type' => 'success', 'message' => 'Product updated successfully!'];
     }
   }
   if (($_POST['action'] ?? '') === 'delete') {
     $id = (int)($_POST['id'] ?? 0);
     $mysqli->prepare('DELETE FROM products WHERE id=?')->bind_param('i', $id)->execute();
     $msg = 'Product deleted';
+    $_SESSION['admin_notify'] = ['type' => 'success', 'message' => 'Product deleted successfully!'];
   }
 }
+$notify = $_SESSION['admin_notify'] ?? null;
+if ($notify) unset($_SESSION['admin_notify']);
 
 $rows = $mysqli->query('SELECT * FROM products ORDER BY id DESC')->fetch_all(MYSQLI_ASSOC);
 $edit = null; if (isset($_GET['edit'])) { $edit = fetch_product((int)$_GET['edit']); }
@@ -134,6 +139,12 @@ $edit = null; if (isset($_GET['edit'])) { $edit = fetch_product((int)$_GET['edit
 </section>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+<?php if ($notify): ?>
+<script type="module">
+  import { showToast } from '<?php echo e(base_url('assets/js/main.js')); ?>';
+  showToast('<?php echo e($notify['message']); ?>', '<?php echo e($notify['type']); ?>');
+</script>
+<?php endif; ?>
 
 <script>
 function removeImg(path) {

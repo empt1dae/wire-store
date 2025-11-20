@@ -5,30 +5,30 @@ require_once __DIR__ . '/includes/header.php';
   <section class="section">
     <h1 class="about-title">About Wire</h1>
     <div class="about-desc">
-      <p>Wire is your futuristic gateway to the world of computer peripherals. We believe in blending technology with art, offering an interactive and intuitive shopping experience for enthusiasts and professionals alike.</p>
-      <p>Our mission is to make your workspace truly yours, with the most innovative keyboards, ultra-responsive mice, and immersive audio gear — all chosen for quality and performance. With a passion for exceptional design and customer experience, Wire is dedicated to helping you find tools that inspire your productivity.</p>
-      <p>Explore our curated catalog, advanced user interface, and personalized support — Wire is redefining how you connect with top-tier PC hardware, every step of the way.</p>
+     <p>Wire - это ваши футуристические ворота в мир компьютерной периферии. Мы верим в сочетание технологий и искусства, предлагая интерактивный и интуитивно понятный опыт покупок как для энтузиастов, так и для профессионалов.</p>
+ Наша миссия состоит в том, чтобы сделать ваше рабочее пространство по-настоящему вашим, используя самые инновационные клавиатуры, сверхчувствительные мыши и аудиосистему с эффектом погружения — все это выбрано с учетом качества и производительности. Компания Wire, стремящаяся к исключительному дизайну и качеству обслуживания клиентов, стремится помочь вам найти инструменты, которые повысят вашу производительность.</p>
+ <p> Ознакомьтесь с нашим тщательно отобранным каталогом, расширенным пользовательским интерфейсом и персонализированной поддержкой — Wire на каждом этапе работы меняет способ подключения к первоклассному оборудованию для ПК.</p>
     </div>
     <div class="about-team-section">
-      <h2 class="about-team-title">Meet Our Team</h2>
+      <h2 class="about-team-title">Наша команда</h2>
       <div class="about-team-row">
         <div class="about-team-card">
           <div class="about-team-avatar about-team-avatar1">A</div>
-          <div class="about-team-card-name">Alex Kim</div>
+          <div class="about-team-card-name">Алексей Вершинин</div>
           <div class="about-team-card-role">Founder &amp; Vision</div>
-          <div class="about-team-card-desc">Dreams up innovative features and ensures Wire stays at the cutting edge of the industry.</div>
+          <div class="about-team-card-desc">Создает инновационные решения и гарантирует, что проволока остается на переднем крае отрасли.</div>
         </div>
         <div class="about-team-card">
           <div class="about-team-avatar about-team-avatar2">J</div>
-          <div class="about-team-card-name">Jamie Rivera</div>
+          <div class="about-team-card-name">Ксения Астахова</div>
           <div class="about-team-card-role">Customer Experience</div>
-          <div class="about-team-card-desc">Champions user feedback and crafts a seamless, delightful shopping journey for everyone.</div>
+          <div class="about-team-card-desc">Следите за отзывами пользователей и создавайте комфортное и восхитительное путешествие по магазинам для всех.</div>
         </div>
         <div class="about-team-card">
           <div class="about-team-avatar about-team-avatar3">S</div>
-          <div class="about-team-card-name">Sam Lee</div>
+          <div class="about-team-card-name">Мирон Селиванов</div>
           <div class="about-team-card-role">Tech Lead</div>
-          <div class="about-team-card-desc">Engineer and peripheral enthusiast, Sam ensures the platform runs smoothly and securely for all users.</div>
+          <div class="about-team-card-desc">Инженер и любитель периферийных устройств Сэм обеспечивает бесперебойную и безопасную работу платформы для всех пользователей.</div>
         </div>
       </div>
     </div>

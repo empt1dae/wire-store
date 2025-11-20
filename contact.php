@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 <div class="contact-wrap-main">
   <h1 class="contact-title">Contact Us</h1>
-  <div class="contact-desc">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</div>
+  <div class="contact-desc">У вас есть вопросы? Мы будем рады получить от вас ответы. Отправьте нам сообщение, и мы ответим как можно скорее.</div>
   <div class="contact-row">
     <aside class="contact-aside">
       <div class="contact-section-title">Get in Touch</div>
@@ -20,36 +20,36 @@ require_once __DIR__ . '/includes/header.php';
           <i class="fa-solid fa-phone"></i>
           <div>
             <strong>Phone</strong><br>
-            +1 (555) 123-4567<br>
-            +1 (555) 987-6543
+            +7 (999) 123-45-67
+            
           </div>
         </div>
         <div class="contact-info-block">
           <i class="fa-solid fa-location-dot"></i>
           <div>
             <strong>Address</strong><br>
-            123 Tech Street<br>
-            Digital City, DC 12345
+            Россия, г. Москва<br>
+            ул. Лесная, д. 18
           </div>
         </div>
         <div class="contact-info-block">
           <i class="fa-regular fa-clock"></i>
           <div>
-            <strong>Business Hours</strong><br>
-            Monday – Friday: 9:00 AM – 6:00 PM<br>
-            Saturday: 10:00 AM – 4:00 PM<br>
-            Sunday: Closed
+            <strong>Bussines Hours</strong><br>
+            Понедельник – Пятница: 9:00  – 18:00<br>
+            Суббота: 10:00 – 16:00 <br>
+            Воскресенье: Закрыто
           </div>
         </div>
       </div>
     </aside>
     <section class="contact-form-card">
-      <form class="contact-form">
-        <h2 class="contact-form-title">Send us a Message</h2>
+      <form class="contact-form" id="contactForm">
+        <h2 class="contact-form-title">Отправьте сообщение</h2>
         <div class="contact-form-row">
           <div class="form-field">
-            <label for="contact_name">Full Name</label>
-            <input type="text" id="contact_name" name="name" placeholder="Your full name">
+            <label for="contact_name">Ваше имя</label>
+            <input type="text" id="contact_name" name="name" placeholder="Ваше имя">
           </div>
           <div class="form-field">
             <label for="contact_email">Email Address</label>
@@ -67,8 +67,8 @@ require_once __DIR__ . '/includes/header.php';
           </select>
         </div>
         <div class="form-field">
-          <label for="contact_message">Message</label>
-          <textarea id="contact_message" name="message" rows="5" placeholder="Tell us how we can help you..."></textarea>
+          <label for="contact_message">Сообщение</label>
+          <textarea id="contact_message" name="message" rows="5" placeholder="Расскажите нам, как мы можем вам помочь..."></textarea>
         </div>
         <button type="submit" class="btn btn-primary contact-form-btn"><i class="fa-regular fa-paper-plane"></i> Send Message</button>
       </form>
@@ -76,6 +76,14 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+<script type="module">
+  import { showToast } from '<?php echo e(base_url('assets/js/main.js')); ?>';
+  document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    showToast('Message sent successfully! We will get back to you soon.', 'success', 4000);
+    this.reset();
+  });
+</script>
 <style>
 .contact-wrap-main {
   max-width: 1150px;

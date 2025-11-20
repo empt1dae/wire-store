@@ -9,8 +9,11 @@ if (is_post()) {
     $stmt->bind_param('si', $status, $id);
     $stmt->execute();
     $msg = 'Order updated';
+    $_SESSION['admin_notify'] = ['type' => 'success', 'message' => 'Order status updated successfully!'];
   }
 }
+$notify = $_SESSION['admin_notify'] ?? null;
+if ($notify) unset($_SESSION['admin_notify']);
 
 $rows = $mysqli->query('SELECT * FROM orders ORDER BY id DESC')->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -49,5 +52,11 @@ $rows = $mysqli->query('SELECT * FROM orders ORDER BY id DESC')->fetch_all(MYSQL
 </section>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+<?php if ($notify): ?>
+<script type="module">
+  import { showToast } from '<?php echo e(base_url('assets/js/main.js')); ?>';
+  showToast('<?php echo e($notify['message']); ?>', '<?php echo e($notify['type']); ?>');
+</script>
+<?php endif; ?>
 
 

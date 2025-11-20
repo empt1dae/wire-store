@@ -46,11 +46,23 @@ if (is_post()) {
 <section class="section">
   <h2 class="section-title">Checkout</h2>
   <?php if ($ok): ?>
-    <p>Thank you! Your order has been received. <a href="/index.php">Return home</a>.</p>
+    <div class="card" style="padding:20px; background:#ecfdf5; border:1px solid #a7f3d0; border-radius:12px; margin-bottom:16px;">
+      <p style="margin:0; color:#065f46; font-weight:600;">✓ Thank you! Your order has been received. <a href="<?php echo e(base_url('index.php')); ?>" style="color:#059669;">Return home</a>.</p>
+    </div>
+    <script type="module">
+      import { showToast } from '<?php echo e(base_url('assets/js/main.js')); ?>';
+      showToast('Order placed successfully! We will process it soon.', 'success', 5000);
+    </script>
   <?php else: ?>
-    <?php if ($errors): ?><div class="card" style="padding:12px; color:#b91c1c; border:1px solid #fecaca; background:#fef2f2; border-radius:12px; margin-bottom:12px;">
+    <?php if ($errors): ?>
+    <div class="card" style="padding:12px; color:#b91c1c; border:1px solid #fecaca; background:#fef2f2; border-radius:12px; margin-bottom:12px;">
       <?php foreach ($errors as $e) echo '<div>'.e($e).'</div>'; ?>
-    </div><?php endif; ?>
+    </div>
+    <script type="module">
+      import { showToast } from '<?php echo e(base_url('assets/js/main.js')); ?>';
+      showToast('Please fix the errors and try again.', 'error');
+    </script>
+    <?php endif; ?>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px;">
       <form class="card form" method="post" style="padding:16px;">
         <div class="field">

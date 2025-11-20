@@ -2,9 +2,20 @@
 <?php
 cart_init();
 file_put_contents(__DIR__.'/includes/cart_debug.log', "CART PAGE [".date('c')."] ".json_encode($_SESSION['cart'])."\n", FILE_APPEND);
+$notifyMsg = '';
 if (is_post()) {
-  foreach (($_POST['qty'] ?? []) as $id => $qty) { cart_set((int)$id, (int)$qty); }
-  if (isset($_POST['remove'])) { cart_remove((int)$_POST['remove']); }
+  $removed = false;
+  $updated = false;
+  foreach (($_POST['qty'] ?? []) as $id => $qty) { 
+    cart_set((int)$id, (int)$qty); 
+    $updated = true;
+  }
+  if (isset($_POST['remove'])) { 
+    cart_remove((int)$_POST['remove']); 
+    $removed = true;
+  }
+  if ($removed) $notifyMsg = 'removed';
+  elseif ($updated) $notifyMsg = 'updated';
 }
 $items = products_from_cart();
 $total = 0.0;
@@ -48,5 +59,11 @@ foreach ($items as $it) { $total += (float)$it['price'] * (int)$it['qty']; }
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php if ($notifyMsg): ?>
+<script type="module">
+  import { showToast } from '<?php echo e(base_url('assets/js/main.js')); ?>';
+  showToast('Cart <?php echo $notifyMsg === 'removed' ? 'item removed' : 'updated'; ?> successfully!', 'success');
+</script>
+<?php endif; ?>
 
 

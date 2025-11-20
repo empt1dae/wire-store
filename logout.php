@@ -2,7 +2,7 @@
 require_once __DIR__ . '/includes/db.php';
 $_SESSION = [];
 session_destroy();
-header('Location: index.php');
+header('Location: index.php?logout=1');
 exit();
 
 

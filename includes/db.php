@@ -1,6 +1,5 @@
 <?php
-// Database connection
-// Adjust credentials to your XAMPP MySQL setup
+
 $db_host = 'localhost';
 $db_user = 'root';
 $db_pass = '';
@@ -14,7 +13,7 @@ if ($mysqli->connect_errno) {
 
 $mysqli->set_charset('utf8mb4');
 
-// Start session for auth and cart
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -22,10 +21,10 @@ if (session_status() === PHP_SESSION_NONE) {
 function is_post(): bool { return ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST'; }
 function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 
-// Build base URL for when app is in a subfolder (e.g., /wire)
+
 function base_url(string $path = ''): string {
     $scriptDir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
-    // Ensure assets and links resolve from app root, not /admin subdir
+   
     if (substr($scriptDir, -6) === '/admin') {
         $base = rtrim(substr($scriptDir, 0, -6), '/');
     } else {

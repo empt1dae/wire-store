@@ -26,6 +26,7 @@ if (is_post()) {
       $ins->bind_param('ssss', $name, $email, $hash, $role);
       $ins->execute();
       $_SESSION['user'] = ['id' => $ins->insert_id, 'name' => $name, 'email' => $email, 'role' => $role];
+      $_SESSION['register_notify'] = ['type' => 'success', 'message' => 'Account created successfully! Welcome, ' . e($name) . '!'];
       if (($role ?? 'user') === 'admin') {
         header('Location: admin/index.php');
       } else {

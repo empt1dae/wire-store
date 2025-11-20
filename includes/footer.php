@@ -6,8 +6,8 @@
             <span class="footer-logo-box">W</span>
             <span class="footer-brand-name">Wire</span>
           </div>
-          <div class="footer-desc">Your digital universe for premium computer peripherals.<br>
-              Quality keyboards, mice, headphones, and accessories for the modern workspace.</div>
+          <div class="footer-desc">Ваша цифровая вселенная компьютерной периферии премиум-класса. <br>
+Качественные клавиатуры, мыши, наушники и аксессуары для современного рабочего пространства.</div>
          
         </div>
         <div class="footer-col middle">
@@ -23,8 +23,8 @@
           <div class="footer-label">CONTACT</div>
           <div class="footer-contact-list">
             <div><i class="fa-regular fa-envelope"></i> info@wire.com</div>
-            <div><i class="fa-solid fa-phone"></i> +1 (555) 123-4567</div>
-            <div><i class="fa-solid fa-location-dot"></i> 123 Tech Street, Digital City</div>
+            <div><i class="fa-solid fa-phone"></i> +7 (999) 123-45-67</div>
+            <div><i class="fa-solid fa-location-dot"></i> Россия, г. Москва, ул. Лесная, д. 18</div>
           </div>
         </div>
       </div>

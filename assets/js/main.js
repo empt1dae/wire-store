@@ -10,13 +10,29 @@ function ensureToastRoot() {
   }
   return root;
 }
-export function showToast(message, type = 'info', timeout = 2500) {
+export function showToast(message, type = 'info', timeout = 3000) {
   const root = ensureToastRoot();
   const el = document.createElement('div');
-  el.className = `toast-item ${type === 'error' ? 'error' : ''}`;
-  el.innerHTML = `<span>${message}</span><button class="btn icon-btn" aria-label="Close">✕</button>`;
+  const icons = {
+    success: '✓',
+    error: '✕',
+    warning: '⚠',
+    info: 'ℹ'
+  };
+  el.className = `toast-item ${type}`;
+  el.innerHTML = `
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="font-size:18px;">${icons[type] || icons.info}</span>
+      <span>${message}</span>
+    </div>
+    <button class="btn icon-btn" aria-label="Close" style="background:transparent; border:none; color:inherit; padding:0; width:24px; height:24px;">✕</button>
+  `;
   root.appendChild(el);
-  const remove = () => el.remove();
+  const remove = () => {
+    el.style.transform = 'translateX(400px)';
+    el.style.opacity = '0';
+    setTimeout(() => el.remove(), 300);
+  };
   el.querySelector('button')?.addEventListener('click', remove);
   setTimeout(remove, timeout);
 }
@@ -32,9 +48,13 @@ export async function addToCart(productId, qty = 1) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast('Product added to cart');
+      showToast('Product added to cart successfully!', 'success');
       const counter = document.querySelector('[data-cart-count]');
-      if (counter) counter.textContent = data.count;
+      if (counter) {
+        counter.textContent = data.count;
+        counter.style.animation = 'pulse 0.5s ease';
+        setTimeout(() => counter.style.animation = '', 500);
+      }
     } else {
       showToast(data.message || 'Failed to add to cart', 'error');
     }

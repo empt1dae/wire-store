@@ -17,8 +17,10 @@ if (is_post()) {
     } else {
       $_SESSION['user'] = ['id'=>$u['id'],'name'=>$u['name'],'email'=>$u['email'],'role'=>$u['role']];
       if (($u['role'] ?? 'user') === 'admin') {
-        header('Location: admin/index.php');
+        $_SESSION['login_notify'] = ['type' => 'success', 'message' => 'Welcome back, ' . e($u['name']) . '!'];
+      header('Location: admin/index.php');
       } else {
+        $_SESSION['login_notify'] = ['type' => 'success', 'message' => 'Welcome back, ' . e($u['name']) . '!'];
         header('Location: index.php');
       }
       exit();
@@ -47,5 +49,12 @@ if (is_post()) {
 .auth-links a:hover { color:#1747a5; }
 </style>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php
+$notify = $_SESSION['login_notify'] ?? null;
+if ($notify) {
+  unset($_SESSION['login_notify']);
+  echo '<script type="module">import { showToast } from \'' . e(base_url('assets/js/main.js')) . '\'; showToast(\'' . e($notify['message']) . '\', \'' . e($notify['type']) . '\');</script>';
+}
+?>
 
 
